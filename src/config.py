@@ -26,7 +26,6 @@ punt_fin_dis = []
 punt_fin_ord = []
 punt_ordinati = []
 class_fin = []
-#tabellone = None
 tab_pesi = None
 
 
@@ -39,21 +38,22 @@ class confgui(QtGui.QMainWindow):
         bwidget = QtGui.QWidget(self)
         master_columner = QtGui.QVBoxLayout()
         grid = QtGui.QGridLayout()
-        toplabel = QtGui.QLabel('Setup')
+        #toplabel = QtGui.QLabel('Setup')
         button1 =QtGui.QPushButton('Start!', bwidget)
         vbox00 = QtGui.QVBoxLayout()
-        numconc = QtGui.QLabel('Num. Concorrenti', bwidget)
+        numconc = QtGui.QLabel('Concorrenti', bwidget)
         vbox00.addWidget(numconc)
+        self.setWindowTitle("BESTAPP Config")
         numconcinp = QtGui.QTextEdit()
         vbox00.addWidget(numconcinp)
         vbox01 = QtGui.QVBoxLayout()
-        numvar = QtGui.QLabel('Num. Variabili', bwidget)
+        numvar = QtGui.QLabel('Variabili', bwidget)
         numvarinp = QtGui.QTextEdit()
         vbox01.addWidget(numvar)
         vbox01.addWidget(numvarinp)
         grid.addLayout(vbox00, 0, 0)
         grid.addLayout(vbox01, 0, 1)
-        master_columner.addWidget(toplabel)
+        #master_columner.addWidget(toplabel)
         master_columner.addLayout(grid)
         master_columner.addWidget(button1)
         bwidget.setLayout(master_columner)
@@ -62,13 +62,14 @@ class confgui(QtGui.QMainWindow):
         numvarinp.textChanged.connect(self.var_to_str)
         numconcinp.textChanged.connect(self.nom_to_str)
         self.resize(600, 400)
+        self.setStyleSheet("font: 16pt \"DejaVu Serif\";\n ")
 
     def switchwind(self):
         global varconfig
         self.hide()
         varconfig = valorideipesi()
         print("initdone")
-        varconfig.show()
+        varconfig.showMaximized()
         print("alldonw")
 
 
@@ -76,7 +77,6 @@ class confgui(QtGui.QMainWindow):
     def settings(self):
         self.varstr_to_list()
         self.nomstr_to_list()
-        # time.sleep(5)
         self.switchwind()
 
 
@@ -143,8 +143,8 @@ class maingui(QtGui.QMainWindow):
         mainlay.addWidget(self.button_save)
         bWidget.setLayout(mainlay)
         self.setCentralWidget(bWidget)
+        self.setWindowTitle("BESTAPP Config")
         self.grid_mk(nom_lis, var_lis)
-
 
 
     def grid_mk(self, rw_names, col_names):
@@ -161,8 +161,10 @@ class maingui(QtGui.QMainWindow):
 
         self.tabellone.setHorizontalHeaderLabels(col_names)
         self.tabellone.setVerticalHeaderLabels(rw_names)
-        rw_hei = int(700 / rw_num)
-        col_wid = int(1024 / col_num)
+        self.tabellone.horizontalHeader().setResizeMode(QtGui.QHeaderView.Stretch)
+        self.tabellone.verticalHeader().setResizeMode(QtGui.QHeaderView.Stretch)
+        #w_hei = int(700 / rw_num)
+        #ol_wid = int(1024 / col_num)
 
         for i in range(0, col_num):
             self.tabellone.setColumnWidth(i, 150)
@@ -170,8 +172,9 @@ class maingui(QtGui.QMainWindow):
             self.tabellone.setRowHeight(j, 50)
 
         self.button_save.clicked.connect(self.readScores)
-        print(rw_hei, col_wid)
-        print("finished grid")
+        #print(rw_hei, col_wid)
+        #print("finished grid")
+        self.setStyleSheet("font: 16pt \"DejaVu Serif\";\n ")
         #return None
 
     def readScores(self):
@@ -207,9 +210,9 @@ class valorideipesi(QtGui.QMainWindow):
         tab_pesi.setColumnCount(1)
         tab_pesi.setRowCount(num_r)
         tab_pesi.setVerticalHeaderLabels(var_lis)
-        tab_pesi.setColumnWidth(0, 300)
-        for i in range(0, num_r):
-            tab_pesi.setRowHeight(i, 80)
+        #ab_pesi.setColumnWidth(0, 300)
+        #or i in range(0, num_r):
+        #   tab_pesi.setRowHeight(i, 80)
         ok = QtGui.QPushButton("OK", sWidget)
         vlay = QtGui.QVBoxLayout()
         vlay.addWidget(tab_pesi)
@@ -218,14 +221,17 @@ class valorideipesi(QtGui.QMainWindow):
         self.setCentralWidget(sWidget)
         self.resize(400, 400)
         ok.clicked.connect(self.switchwind1)
-
+        self.setStyleSheet("font: 16pt \"DejaVu Serif\";\n ")
+        self.setWindowTitle("BESTAPP Config")
+        tab_pesi.horizontalHeader().setResizeMode(QtGui.QHeaderView.Stretch)
+        tab_pesi.verticalHeader().setResizeMode(QtGui.QHeaderView.Stretch)
 
     def switchwind1(self):
         global mainwind
         self.saveconstants()
         self.hide()
         mainwind = maingui()
-        mainwind.show()
+        mainwind.showMaximized()
         print("connected")
 
     def saveconstants(self):
@@ -293,6 +299,6 @@ if __name__ == "__main__":
 
     config = confgui()
 
-    config.show()
+    config.showMaximized()
 
     app.exec_()

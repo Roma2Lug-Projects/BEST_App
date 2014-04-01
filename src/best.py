@@ -72,7 +72,7 @@ class calcoli():
         for parziali in self.dati.mat_punteggi:
             punteggio = 0
             for index in range(self.n_var):
-                pu = int(parziali[index])
+                pu = float(parziali[index])
                 pe = float(self.dati.lista_pes[index])
                 pf = pu * pe
                 punteggio += pf
